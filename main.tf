@@ -1,3 +1,13 @@
+resource "azurerm_network_security_group" "terraform_nsg" {
+  name                = "nsg-terraform-lab"
+  location            = azurerm_resource_group.terraform_rg.location
+  resource_group_name = azurerm_resource_group.terraform_rg.name
+}
+
+resource "azurerm_subnet_network_security_group_association" "terraform_nsg_association" {
+  subnet_id                 = azurerm_subnet.terraform_subnet.id
+  network_security_group_id = azurerm_network_security_group.terraform_nsg.id
+}
 terraform {
   required_providers {
     azurerm = {
