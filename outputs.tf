@@ -22,3 +22,12 @@ output "subnet_address_prefixes" {
   description = "Subnet address prefixes"
   value       = azurerm_subnet.terraform_subnet.address_prefixes
 }
+output "public_ip_address" {
+  description = "Public IP address of the Linux VM"
+  value       = azurerm_public_ip.terraform_pip.ip_address
+}
+
+output "ssh_command" {
+  description = "SSH command to connect to the Linux VM"
+  value       = "ssh azureadmin@${azurerm_public_ip.terraform_pip.ip_address}"
+}

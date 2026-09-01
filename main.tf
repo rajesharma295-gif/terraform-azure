@@ -22,19 +22,19 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "terraform_rg" {
-  name     = "rg-terraform-lab"
+  name     = var.resource_group_name
   location = var.location
 }
 
 resource "azurerm_virtual_network" "terraform_vnet" {
-  name                = "vnet-terraform-lab"
+  name                = var.vnet_name
   location            = azurerm_resource_group.terraform_rg.location
   resource_group_name = azurerm_resource_group.terraform_rg.name
   address_space       = var.vnet_address_space
 }
 
 resource "azurerm_subnet" "terraform_subnet" {
-  name                 = "subnet-terraform-lab"
+  name                 = var.subnet_name
   resource_group_name  = azurerm_resource_group.terraform_rg.name
   virtual_network_name = azurerm_virtual_network.terraform_vnet.name
   address_prefixes     = var.subnet_address_prefixes
@@ -60,10 +60,10 @@ resource "azurerm_network_interface" "terraform_nic" {
   }
 }
 resource "azurerm_linux_virtual_machine" "terraform_vm" {
-  name                = "vm-terraform-lab"
+  name                = var.vm_name
   resource_group_name = azurerm_resource_group.terraform_rg.name
   location            = azurerm_resource_group.terraform_rg.location
-  size                = "Standard_DC1ds_v3"
+  size                = var.vm_size
   admin_username      = "azureadmin"
 
   network_interface_ids = [
