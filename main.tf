@@ -70,9 +70,19 @@ resource "azurerm_linux_virtual_machine" "terraform_vm" {
     azurerm_network_interface.terraform_nic.id
   ]
 
+  custom_data = base64encode(<<-EOF
+    #!/bin/bash
+    apt-get update
+    apt-get install -y nginx
+    systemctl enable nginx
+    systemctl start nginx
+  EOF
+  )
+
   admin_ssh_key {
     username   = "azureadmin"
     public_key = file("~/.ssh/id_rsa.pub")
+
   }
 
   os_disk {
